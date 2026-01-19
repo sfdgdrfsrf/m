@@ -24,7 +24,7 @@ local TextChatService = game:GetService("TextChatService")
 
 -- // CONFIGURATION \\
 local CONFIG = {
-    NPC_ID = "rbxassetid://9993407241",
+    NPC_ID = "rbxassetid://9870579094",
     BRAZIL_PLACE_ID = 10684632908,
     
     -- Sounds
