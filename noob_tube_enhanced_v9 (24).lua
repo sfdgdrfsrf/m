@@ -242,20 +242,20 @@ local activeNoobs      = {}   -- track all living noobs
 
 -- ── Display Names ───────────────────────────────────────────
 local DISPLAY_NAMES = {
-    "Ultimate Noob","Pro Gamer","XxDarkShadowxX","Legendary Player","Epic Warrior",
-    "Mighty Champion","Speed Demon","Silent Hunter","Blazing Fire","Ice King",
-    "Thunder God","Shadow Assassin","Golden Knight","Silver Bullet","Diamond Sword",
-    "Ruby Shield","Emerald Fighter","Sapphire Mage","Crystal Warrior","Obsidian Tank",
-    "Plasma Shooter","Laser Sniper","Ninja Master","Samurai Legend","Viking Berserker",
-    "Spartan Warrior","Roman Gladiator","Norse God","Cosmic Traveler","Star Navigator",
-    "Galaxy Explorer","Universe Master","Dimension Walker","Time Traveler","Space Cadet",
-    "Meteor Striker","Comet Rider","Quantum Leaper","Atom Splitter","Flame Emperor",
-    "Water Sage","Earth Titan","Wind Spirit","Lightning Lord","Noob Slayer",
-    "Expert Eliminator","Grandmaster Annihilator","Glitcher Gary","Hacker Henry",
-    "Exploiter Eddie","Modder Mike","Casual Carl","Tryhard Tim","AFK Andy",
-    "RageQuit Randy","GriefeR Greg","BotLike Barry","Sweaty Steve","Toxic Tommy",
-    "Clutch Carlos","Cracked Kevin","Drip Lord","No-Scope Nicholas","360 Zach",
-    "Strafing Sara","Bunny Bob","Wallhack Willie","Godmode Gary","Lag Legend",
+    "ismellbad","epicalgamer223","XxDarkShadowxX","larper","Mightyeagleballs",
+    "imangri","iminyourwalls","donkea","icanfeelpainbruda2234M","IceKingFromAdventureTime_M2",
+    ":3","nyameowmeoww..223","Golden Knight","balls","i can swing my Diamond Sword",
+    "ropes BOmbs you want it?","Emerald Fighter","dickhead","Crystals","a golden dandelion",
+    "its krimas","mokey","Baiter Master","chamoy","Viking",
+    "Spartan Warrior","Romania","Horse","neco arc","blue balled",
+    "Galaxy gas","Fe bypass1!?!1?!?","welcome to the future","spongebob","Spingebill",
+    "ocean man","cum","Quantum physics","deez nuts","minecraft villager",
+    "gaben","gay","ball splitter","Luigi is number 1","Noob Slayer",
+    "im the one who knocks","Grandmother","sexy","Henry the stickman",
+    "sonic.exe","ed the moderator","Carl the npc","Tryhard","AFK!!",
+    "RageQuited","Sex bomb","Bot","steve","jack black",
+    "pingas","wargini","wega","MLG NOOB","golden sigma",
+    "sigma","Bob","wario","patrick","dothemario",
 }
 
 local function rndName() return DISPLAY_NAMES[math.random(1,#DISPLAY_NAMES)] end
@@ -24064,4 +24064,71 @@ end
 
 tool.Activated:Connect(onActivated)
 
+-- ═══════════════════════════════════════════════════════════
+-- DEBUG: AUTO-SCAN WORKSPACE FOLDERS
+-- This runs once on load to show you what is inside your killer folders.
+-- ═══════════════════════════════════════════════════════════
+
+task.spawn(function()
+	task.wait(2) -- Wait for game to load
+	
+	print("[NoobTube Debug] Scanning Workspace for Killers...")
+	
+	-- List of folders to check
+	local foldersToCheck = {
+		"Killer Storage", "Killers", "bots", "Bots", "Enemies", "Monsters", 
+		"Hostiles", "NPCs", "AI"
+	}
+	
+	local totalFound = 0
+	
+	for _, folderName in ipairs(foldersToCheck) do
+		local folder = workspace:FindFirstChild(folderName)
+		if folder then
+			print("[NoobTube] Found folder: '" .. folderName .. "'")
+			
+			-- Scan inside the folder
+			local count = 0
+			for _, descendant in ipairs(folder:GetDescendants()) do
+				if descendant:IsA("Model") then
+					local h = humanoidOf(descendant)
+					if h then
+						count = count + 1
+						totalFound = totalFound + 1
+						-- Print first 5 enemies so we don't spam the console
+						if count <= 5 then
+							print("  -> Detected: " .. descendant.Name .. " (HP: " .. math.floor(h.Health) .. ")")
+						end
+					end
+				end
+			end
+			
+			if count > 5 then
+				print("  -> ... and " .. (count - 5) .. " more entities.")
+			elseif count == 0 then
+				print("  -> (Folder is empty or contains no Humanoids)")
+			else
+				print("  -> Total entities in folder: " .. count)
+			end
+		end
+	end
+	
+	if totalFound == 0 then
+		print("[NoobTube] WARNING: No killers found in standard folders.")
+		print("[NoobTube] Trying full workspace scan (this may take a moment)...")
+		
+		local wsCount = 0
+		for _, obj in ipairs(workspace:GetDescendants()) do
+			if obj:IsA("Model") and isHostileNPC(obj) then
+				wsCount = wsCount + 1
+				if wsCount <= 3 then
+					print("  -> Found in workspace: " .. obj.Name)
+				end
+			end
+		end
+		print("[NoobTube] Total hostile NPCs found in entire workspace: " .. wsCount)
+	else
+		print("[NoobTube] SUCCESS: Detected " .. totalFound .. " potential targets in folders.")
+	end
+end)
 print("[NoobTube v9.5.3] Loaded! "..#characterTypes.." noob types. NEW: chips_noob (chip bag weapon, combo slash + taunt + OHHHHHHH slam, 5 cycling flavors, eviscerate kill effect). Debug: _G.NOOB_TUBE_DEBUG = true. Team: "..(noobTeam and noobTeam.Name or "fallback tag only")..".")
